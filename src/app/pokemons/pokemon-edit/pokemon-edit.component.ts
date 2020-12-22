@@ -14,7 +14,9 @@ singlePokemon: Pokemon = null;
 
   ngOnInit(): void {
     const id = +this.route.snapshot.params.id;
-    this.singlePokemon = this.pokemonService.getSinglePokemon(id);
+  //  this.singlePokemon = this.pokemonService.getSinglePokemon(id); //modifié dans tp4
+    this.pokemonService.getSinglePokemon(id)
+      .subscribe(pkm => this.singlePokemon = pkm);
   }
 
 }

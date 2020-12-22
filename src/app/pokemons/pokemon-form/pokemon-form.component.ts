@@ -35,12 +35,28 @@ export class PokemonFormComponent implements OnInit {
     }
   }
 
+  // valide le nombre de  types pour chaque pokémon
+  isTypesValid(type: string): boolean{
+    if (this.pokemon.types.length === 1 && this.hasType(type)) {
+      return false;
+    }
+    if (this.pokemon.types.length >= 3 && !this.hasType(type)){
+      return  false;
+    }
+    return true;
+}
   /**
    * methode appelée lorsque le formulaire est soumis
    */
+  goBack(){
+    const link = ['pokemon/', this.pokemon.id];
+    this.router.navigate(link);
+  }
   onSubmit(): void {
     console.log('Submit form');
-    const link = ['/pokemon', this.pokemon.id];
-    this.router.navigate(link);
+    // const link = ['/pokemon', this.pokemon.id];
+   //  this.router.navigate(link);
+    this.pokemonService.updatePokemon(this.pokemon)
+      .subscribe(() => this.goBack());
   }
 }

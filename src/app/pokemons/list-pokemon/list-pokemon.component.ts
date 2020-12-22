@@ -10,16 +10,14 @@ import {PokemonsService} from '../pokemons.service';
 })
 export class ListPokemonComponent implements OnInit {
  pokemons: Pokemon[] ;
-  constructor(private router: Router, private pokemonService: PokemonsService ) { }
+  constructor(private router: Router, private pokemonsService: PokemonsService ) {}
 
   ngOnInit(): void {
-    //this.pokemons = POKEMONS;
-  this.pokemons = this.pokemonService.getListPokemons();
+    this.pokemonsService.getListPokemons()
+      .subscribe(listPkm => this.pokemons = listPkm);
   }
   selectPokemon(selectedPokemon: Pokemon): void {
-  //  alert('Vous avez sélectionné : \'' + selectedPokemon.name + '\'');
-    // passe en parametre l'url de la redirection + les parametre eventuels de la route
-    const link = [ '/pokemon', selectedPokemon.id];
-    this.router.navigate(link);
+  const link = [ '/pokemon', selectedPokemon.id];
+  this.router.navigate(link);
   }
 }

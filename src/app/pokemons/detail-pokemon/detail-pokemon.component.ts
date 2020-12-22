@@ -14,15 +14,13 @@ export class DetailPokemonComponent implements OnInit {
   pokemonToDisplay: Pokemon = null;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private pokemonService: PokemonsService ) { }
+              private pokemonService: PokemonsService ) {
+  }
 
   ngOnInit(): void {
-    // this.listOfPokemons = this.pokemonService.getListPokemons();
-
-    // Récupérer le paramètre de la route associée à notre composant
-    // Snapshot: Récupérer le paramètre de manière synchrone.
     const id = +this.route.snapshot.paramMap.get('id');
-    this.pokemonToDisplay = this.pokemonService.getSinglePokemon(id);
+    this.pokemonService.getSinglePokemon(id)
+      .subscribe(pkm => this.pokemonToDisplay = pkm);
   }
   goBack(){
     this.router.navigate(['/pokemon']);
@@ -30,5 +28,15 @@ export class DetailPokemonComponent implements OnInit {
   editerPokemon(pokemonToEdit: Pokemon): void {
     const link = ['pokemon/edit', pokemonToEdit.id];
     this.router.navigate(link);
+  }
+  deletePokemon(pokemon){
+    if (confirm(`voullez vous vraiment supprimer le pokemon: ${pokemon.name}`)){
+      this.pokemonService.deletePokemon(pokemon)
+        .subscribe(() =>{
+          const home = ['pokemon'];
+          alert(`le pokémon ${pokemon.name} a été supprimé `);
+          this.router.navigate(home);
+        });
+    }
   }
 }
